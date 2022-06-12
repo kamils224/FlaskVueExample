@@ -1,4 +1,3 @@
-import logging
 from dataclasses import asdict
 
 from flask import request
