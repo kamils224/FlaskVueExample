@@ -1,5 +1,4 @@
 import random
-from itertools import count
 from typing import List
 
 from storage.models import DeviceModel
