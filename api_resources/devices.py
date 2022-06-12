@@ -40,10 +40,8 @@ class DeviceActionsApi(BaseResource):
     def post(self, device_id: str):
         validated = DeviceActionsSerializer().load(request.json)
         action_type = validated["action_name"]
-        success = device_service.start_device_action(device_id, action_type)
+        success, message = device_service.start_device_action(device_id, action_type)
 
         if success:
-            return self.success_response(
-                {"message": f"Action [{action_type}] executed successfully"}
-            )
-        return self.error_not_found()
+            return self.success_response({"message": message})
+        return self.error_not_found(message)
