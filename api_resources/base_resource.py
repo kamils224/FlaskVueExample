@@ -4,9 +4,8 @@ from flask_restful import Resource
 
 
 class BaseResource(Resource):
-
-    def success_response(self, data: Optional[Any] = None, status_code: int = 200):
-        return {"response": data}, status_code
+    def success_response(self, data: Optional[Dict] = None, status_code: int = 200):
+        return data, status_code
 
     def error_response(self, error: Optional[str] = None, status_code: int = 400):
         if error is None:

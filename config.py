@@ -1,2 +1,3 @@
 class Config:
-    CORS_HEADERS = "Content-Type"
+    CORS_HEADERS = "Content-Type,Authorization"
+    CORS_ORIGINS = "*"

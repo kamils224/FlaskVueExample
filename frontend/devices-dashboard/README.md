@@ -1,35 +1,30 @@
-# devices-dashboard
+# Flask + VUE - Example API for mqtt
 
-This template should help get you started developing with Vue 3 in Vite.
+A template prepared for injecting mqtt client
 
 ## Recommended IDE Setup
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+PyCharm (https://www.jetbrains.com/pycharm/)
 
 ## Project Setup
 
+Install python dependencies - from root directory:
 ```sh
+pip install -r requirements.txt
+```
+Run flask app:
+```
+python3 app.py
+```
+Install Vue dependencies - from `frontend/devices-dashboard`:
+```
 npm install
 ```
-
-### Compile and Hot-Reload for Development
-
-```sh
+Run Vue app - from `frontend/devices-dashboard`:
+```
 npm run dev
 ```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
+Format code - from root directory:
 ```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
+black .
 ```

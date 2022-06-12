@@ -1,3 +1,5 @@
+import axios from "../axiosInstance";
+
 export class DeviceModel {
   constructor(deviceId, name, temperature, water, sun) {
     this.deviceId = deviceId;
@@ -6,19 +8,46 @@ export class DeviceModel {
     this.water = water;
     this.sun = sun;
   }
+
+  static fromJson(json) {
+    return new DeviceModel(
+      json.device_id,
+      json.name,
+      json.temperature,
+      json.water,
+      json.sun
+    );
+  }
 }
 
-const fakeDevices = [
-  new DeviceModel("device1", "deviceName1", 15, 50, 5),
-  new DeviceModel("device2", "deviceName2", 30, 10, 80),
-  new DeviceModel("device3", "deviceName3", 45, 30, 64),
-  new DeviceModel("device4", "deviceName4", 18, 70, 32),
-  new DeviceModel("device5", "deviceName5", 25, 44, 57),
-];
+class ActionModel {
+  constructor(title, actionName) {
+    this.title = title;
+    this.actionName = actionName;
+  }
+
+  static fromJson(json) {
+    return new ActionModel(json.title, json.action_name);
+  }
+}
 
 class DeviceService {
-  getAllDevices() {
-    return fakeDevices;
+  async getAllDevices() {
+    const response = await axios.get("/devices");
+
+    return response.data.devices.map((item) => DeviceModel.fromJson(item));
+  }
+
+  async getPossibleActions() {
+    const response = await axios.get("/devices/actions");
+    return response.data.actions.map((item) => ActionModel.fromJson(item));
+  }
+
+  async sendActionRequest(deviceId, actionName) {
+    const response = await axios.post(`/device/${deviceId}`, {
+      action_name: actionName,
+    });
+    return response.data.message;
   }
 }
 

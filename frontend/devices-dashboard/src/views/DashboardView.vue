@@ -1,15 +1,25 @@
 <template>
-  <a-table bordered :dataSource="devices" :columns="devicesColumns">
+  <a-button type="secondary" @click="loadDevices">Refresh</a-button>
+  <a-divider />
+  <a-table
+    v-if="!isLoading"
+    bordered
+    :dataSource="devices"
+    :columns="devicesColumns"
+  >
     <template #bodyCell="{ column, record }">
       <template v-if="column.dataIndex === 'actions'">
         <a-button
+          v-for="action in actions"
+          :key="action.actionName"
           type="primary"
-          @click="onActionClick(record.deviceId, actionTypes.watering)"
-          >Watering</a-button
+          @click="onActionClick(record.deviceId, action.actionName)"
+          >{{ action.title }}</a-button
         >
       </template>
     </template>
   </a-table>
+  <a-spin size="large" v-else style="width: 100%; justify-content: center"/>
 </template>
 
 <script>
@@ -19,10 +29,9 @@ export default {
   components: {},
   data() {
     return {
-      actionTypes: {
-        watering: "WATERING",
-      },
-      devices: null,
+      actions: [],
+      devices: [],
+      isLoading: false,
       devicesDataSource: [],
       devicesColumns: [
         { title: "Device ID", dataIndex: "deviceId", key: "deviceId" },
@@ -36,12 +45,19 @@ export default {
   },
   methods: {
     onActionClick(deviceId, actionType) {
-      console.log(deviceId);
-      console.log(actionType);
+      deviceService.sendActionRequest(deviceId, actionType);
+    },
+    async loadDevices() {
+      this.isLoading = true;
+      [this.devices, this.actions] = await Promise.all([
+        deviceService.getAllDevices(),
+        deviceService.getPossibleActions(),
+      ]);
+      this.isLoading = false;
     },
   },
-  mounted() {
-    this.devices = deviceService.getAllDevices();
+  async mounted() {
+    await this.loadDevices();
   },
 };
 </script>
